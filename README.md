@@ -5,3 +5,5 @@
 [![Build Status](https://github.com/ekholme/eeML.jl/actions/workflows/CI.yml/badge.svg?branch=master)](https://github.com/ekholme/eeML.jl/actions/workflows/CI.yml?query=branch%3Amaster)
 [![Build Status](https://travis-ci.com/ekholme/eeML.jl.svg?branch=master)](https://travis-ci.com/ekholme/eeML.jl)
 [![Coverage](https://codecov.io/gh/ekholme/eeML.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/ekholme/eeML.jl)
+
+Fitting ML models and implementing algorithms in Julia.
