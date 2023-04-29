@@ -17,8 +17,7 @@ export
 EEmodel,
 LinearRegression,
 LogisticRegression,
-
-train!
+train!,
 binary_crossentropy
 
 end

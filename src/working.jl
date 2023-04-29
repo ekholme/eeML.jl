@@ -1,8 +1,8 @@
-using eeML
-using Distributions
-using RDatasets
-using Random
-using GLM
+# using eeML
+# using Distributions
+# using RDatasets
+# using Random
+# using GLM
 
-Random.seed!(0408)
+# Random.seed!(0408)
 #file for working in while developing
