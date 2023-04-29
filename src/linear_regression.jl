@@ -1,6 +1,8 @@
 """
     LinearRegression
 
+    LinearRegression(𝐗::Matrix{<:Real}, y::AbstractVector{<:Real}})
+
 A constructor function for a new LinearRegression object
 
 # Arguments
@@ -15,6 +17,8 @@ end
 
 """
     train!
+
+    train!(model::LinearRegression)
 
 In-place training of a linear regression model
 

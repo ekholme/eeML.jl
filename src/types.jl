@@ -21,9 +21,21 @@ mutable struct LinearRegression <: EEmodel
     SEᵦ::Vector{<:Real}
 end
 
-#constructor function to intialize without betas and std errs
-function LinearRegression(;𝐗, y)
-    b = Vector{Float64}(undef, size(𝐗)[2])
-    err = Vector{Float64}(undef, length(b))
-    return LinearRegression(𝐗, y, b, err)
+"""
+    LogisticRegression
+
+A container for a logistic regression model.
+Contains the predictor matrix, the targets, and the coefficients
+
+# Fields
+
+- `𝐗::Matrix{<:Real}`: the predictor matrix
+- `y::AbstractVector{<:Bool}`: the target vector
+- `β̂::Vector{<:Real}`: the estimated coefficients
+"""
+mutable struct LogisticRegression <: EEmodel
+    𝐗::Matrix{<:Real}
+    y::AbstractVector{Bool}
+    β̂::Vector{<:Real}
 end
+#todo -- include betas and std errs
