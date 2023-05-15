@@ -1,6 +1,4 @@
 """
-    LogisticRegression
-
     LogisticRegression(𝐗::Matrix{<:Real}, y::AbstractVector{<:Real}})
 
 A constructor function for a new LogisticRegression object
@@ -16,8 +14,6 @@ end
 
 
 """
-    train!
-
     train!(model::LogisticRegression)
 
 In-place training of a logistic regression model
