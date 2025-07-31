@@ -37,6 +37,9 @@ The coefficients `β` are calculated by solving the least-squares problem `Xβ =
 - `model::LinearRegression`: The model to be trained.
 - `X::AbstractMatrix{<:Real}`: The matrix of features. It's common to include a column of ones for an intercept term.
 - `y::AbstractVector{<:Real}`: The vector of target values.
+
+# Returns
+- `LinearRegression`: The trained model.
 """
 function fit!(model::LinearRegression, X::AbstractMatrix{<:Real}, y::AbstractVector{<:Real})
     size(X, 1) == length(y) || throw(DimensionMismatch("Number of rows in X must match the length of y."))
@@ -59,3 +62,4 @@ function predict(model::LinearRegression, X::AbstractMatrix{<:Real})
     size(X, 2) == length(model.β) || throw(DimensionMismatch("Number of features in X must match the number of coefficients in the model."))
     return X * model.β
 end
+
