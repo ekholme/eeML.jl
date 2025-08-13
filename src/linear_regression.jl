@@ -41,11 +41,36 @@ The coefficients `β` are calculated by solving the least-squares problem `Xβ =
 # Returns
 - `LinearRegression`: The trained model.
 """
-function fit!(model::LinearRegression, X::AbstractMatrix{<:Real}, y::AbstractVector{<:Real})
+function fit!(model::LinearRegression, X::AbstractMatrix{<:Real}, y::AbstractVector{<:Real}; fit_method="closed_form", kwargs...)
     size(X, 1) == length(y) || throw(DimensionMismatch("Number of rows in X must match the length of y."))
-    # The \ operator is more numerically stable and efficient than inv(X'*X)*X'*y
-    model.β = X \ y
+
+    if fit_method ∉ ["closed_form", "grad_descent"]
+        throw(ArgumentError("fit_method must be either 'closed_form' or 'grad_descent'"))
+    end
+
+    if fit_method == "grad_descent"
+        return _fit_gradient_descent!(model, X, y; kwargs...)
+    else
+        # The \ operator is more numerically stable and efficient than inv(X'*X)*X'*y
+        model.β = X \ y
+        return model
+    end
+
+end
+
+function _fit_gradient_descent!(model::LinearRegression, X::AbstractMatrix{<:Real}, y::AbstractVector{<:Real}; kwargs...)
+    size(X, 1) == length(y) || throw(DimensionMismatch("Number of rows in X must match the length of y."))
+
+    function loss(β)
+        ŷ = X * β
+        return mse(y, ŷ)
+    end
+
+    init_β = zeros(size(X, 2))
+    model.β = gradient_descent(loss, init_β; kwargs...)
+
     return model
+
 end
 
 """
