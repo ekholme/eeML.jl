@@ -12,7 +12,6 @@ export
 
     #functions
     fit!,
-    _fit_gradient_descent!,
     predict,
     rmse,
     r_squared,
