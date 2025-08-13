@@ -8,6 +8,7 @@ makedocs(;
     authors="Eric Ekholm <eric.ekholm@gmail.com> and contributors",
     sitename="eeML.jl",
     format=Documenter.HTML(;
+        prettyurls=get(ENV, "CI", "false") == "true",
         canonical="https://ekholme.github.io/eeML.jl",
         edit_link="master",
         assets=String[],
@@ -20,4 +21,5 @@ makedocs(;
 deploydocs(;
     repo="github.com/ekholme/eeML.jl",
     devbranch="master",
+    push_preview=true,
 )

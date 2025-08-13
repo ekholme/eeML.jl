@@ -15,7 +15,7 @@ RMSE is calculated as `sqrt(mean((y - ŷ).^2))`.
 # Examples
 ```jldoctest
 julia> rmse([1, 2, 3], [1.1, 2.2, 2.9])
-0.15275252316519468
+0.14142135623730964
 ```
 """
 function rmse(y::Vector{<:Real}, ŷ::Vector{<:Real})
@@ -27,39 +27,43 @@ function rmse(y::Vector{<:Real}, ŷ::Vector{<:Real})
     return sqrt(sum((y .- ŷ) .^ 2) / length(y))
 end
 
-
 """
-    r_squared(y::Vector{<:Real}, ŷ::Vector{<:Real})
+    mse(y::AbstractVector{<:Real}, ŷ::AbstractVector{<:Real})
 
-Calculate the R-squared (coefficient of determination) value.
+Calculate the Mean Squared Error (MSE) between the true values `y` and the predicted values `ŷ`.
 
-R-squared measures the proportion of the variance in the dependent variable that is predictable from the independent variable(s). It is calculated as `1 - (SS_res / SS_tot)`, where `SS_res` is the sum of squared residuals and `SS_tot` is the total sum of squares.
+MSE is calculated as `mean((y - ŷ).^2)`. This is a common loss function for regression problems.
 
 # Arguments
 - `y::AbstractVector{<:Real}`: The vector of true values.
 - `ŷ::AbstractVector{<:Real}`: The vector of predicted values.
 
 # Returns
-- `Float64`: The R-squared value.
-
-# Examples
-```jldoctest
-julia> r_squared([1, 2, 3, 4], [1.1, 1.9, 3.2, 3.8])
-0.98
-```
+- `Float64`: The Mean Squared Error.
 """
-function r_squared(y::AbstractVector{<:Real}, ŷ::AbstractVector{<:Real})
-    #check lengths
-    if length(y) != length(ŷ)
-        throw(ArgumentError("y and ŷ must be the same length"))
-    end
-
-    ȳ = Statistics.mean(y)
-    ss_resid = sum((y .- ŷ) .^ 2)
-    sst = sum((y .- ȳ) .^ 2)
-
-    rsq = 1 - (ss_resid / sst)
-    return rsq
+function mse(y::AbstractVector{<:Real}, ŷ::AbstractVector{<:Real})
+    length(y) == length(ŷ) || throw(ArgumentError("y and ŷ must be the same length"))
+    return sum((y .- ŷ) .^ 2) / length(y)
 end
-# not really a loss function, but something we can optimize for at least in theory?
-# this might get reorganized later
+
+"""
+    binary_crossentropy(y::AbstractVector{<:Integer}, ŷ::AbstractVector{<:Real})
+
+Calculate the binary cross-entropy loss, commonly used for binary classification.
+
+Loss is calculated as `-mean(y .* log.(ŷ) .+ (1 .- y) .* log.(1 .- ŷ))`. A small epsilon `eps` is used to avoid `log(0)`.
+
+# Arguments
+- `y::AbstractVector{<:Integer}`: The vector of true binary labels (0 or 1).
+- `ŷ::AbstractVector{<:Real}`: The vector of predicted probabilities (between 0 and 1).
+
+# Returns
+- `Float64`: The binary cross-entropy loss.
+"""
+function binary_crossentropy(y::AbstractVector{<:Integer}, ŷ::AbstractVector{<:Real})
+    length(y) == length(ŷ) || throw(ArgumentError("y and ŷ must be the same length"))
+    # Add a small epsilon to prevent log(0) which is -Inf
+    ϵ = 1e-15
+    ŷ_clipped = clamp.(ŷ, ϵ, 1 - ϵ)
+    return -mean(y .* log.(ŷ_clipped) .+ (1 .- y) .* log.(1 .- ŷ_clipped))
+end
