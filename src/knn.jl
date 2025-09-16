@@ -44,3 +44,48 @@ function predict(model::KnnRegression, X::AbstractMatrix{<:Real}, k::Int=5)
 
     return preds
 end
+
+# KnnClassification ----------------------
+
+mutable struct KnnClassification
+    X::AbstractMatrix{<:Real}
+    y::AbstractVector{<:Any}
+end
+
+function KnnClassification()
+    return KnnClassification(Matrix{Float64}(undef, 0, 0), Any[])
+end
+
+function fit!(model::KnnClassification, X::AbstractMatrix{<:Real}, y::AbstractVector{<:Any})
+    # check that dimensions match
+    size(X, 1) == length(y) || throw(DimensionMismatch("Number of rows in X must match the length of y."))
+
+    model.X = X
+    model.y = y
+    return model
+end
+
+function _predict_knn_classification_binary(model::KnnClassification, X::AbstractMatrix{<:Real}, k::Int=5)
+    #check that model has been fit
+    isempty(model.y) && error("Model has not been trained. Call fit! on the model first.")
+
+    # check that ncol match
+    size(model.X, 2) == size(X, 2) || throw(DimensionMismatch("Number of columns in model.X and X must match."))
+
+    #check k
+    n_samples = size(model.X, 1)
+    1 <= k <= n_samples || throw(ArgumentError("k must be between 1 and the number of rows in the training data ($n_samples)."))
+
+    dist_mat = pairwise(Euclidean(), X', model.X')
+    preds = zeros(size(X, 1))
+
+    for i in eachindex(preds)
+        ind = sortperm(dist_mat[i, :])
+        # note that mode() is defined in my utils.jl file
+        preds = mode(model.y[ind[1:k]])
+    end
+
+    return preds
+end
+
+# RESUME HERE -- CHECK THE ABOVE, THEN IMPLEMENT A MORE GENERAL PREDICT() METHOD

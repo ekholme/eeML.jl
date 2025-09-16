@@ -9,6 +9,7 @@ export
     #types
     LinearRegression,
     LogisticRegression,
+    KnnRegression,
 
     #functions
     fit!,
@@ -27,5 +28,6 @@ include("utils.jl")
 include("loss_funcs.jl")
 include("optimizers.jl")
 include("score.jl")
+include("knn.jl")
 
 end
