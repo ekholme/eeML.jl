@@ -34,3 +34,35 @@ function r_squared(y::AbstractVector{<:Real}, ŷ::AbstractVector{<:Real})
     rsq = 1 - (ss_resid / sst)
     return rsq
 end
+
+"""
+    accuracy(y::AbstractVector, ŷ::AbstractVector)
+
+Calculate the classification accuracy.
+
+Accuracy is the proportion of correct predictions, calculated as `(number of correct predictions) / (total number of predictions)`.
+
+# Arguments
+- `y::AbstractVector`: The vector of true labels.
+- `ŷ::AbstractVector`: The vector of predicted labels.
+
+# Returns
+- `Float64`: The accuracy score, a value between 0.0 and 1.0.
+
+# Examples
+```jldoctest
+julia> accuracy([1, 2, 3, 4], [1, 2, 4, 4])
+0.75
+```
+"""
+function accuracy(y::AbstractVector{<:Any}, ŷ::AbstractVector{<:Any})
+    #check lengths
+    if length(y) != length(ŷ)
+        throw(ArgumentError("y and ŷ must be the same length"))
+    end
+
+    n = length(y)
+    acc = sum(y .== ŷ) / n
+
+    return acc
+end

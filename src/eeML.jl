@@ -10,15 +10,24 @@ export
     LinearRegression,
     LogisticRegression,
     KnnRegression,
+    KnnClassification,
 
     #functions
     fit!,
     predict,
+
+    #loss funcs
     rmse,
-    r_squared,
     mse,
     binary_crossentropy,
+
+    #scoring funcs
+    r_squared,
+    accuracy,
+
+    #utils
     sigmoid,
+    mode,
     gradient_descent
 
 #includes
